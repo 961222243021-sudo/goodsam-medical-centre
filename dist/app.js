@@ -20,7 +20,7 @@ if('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-moti
     elapsed += delta;
     const zoom = (1 - Math.cos(elapsed * Math.PI * 2 / 16000)) / 2;
     photos.forEach((photo, index) => {
-      photo.style.transform = 'translateZ(0) scale(' + (1 + zoom * (index === 0 ? 0.18 : 0.14)).toFixed(5) + ')';
+      photo.style.transform = 'translateZ(0) scale(' + (1 + zoom * (reduced.matches ? 0.06 : (index === 0 ? 0.18 : 0.14))).toFixed(5) + ')';
     });
     frame = requestAnimationFrame(tick);
   }
@@ -28,7 +28,7 @@ if('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-moti
     cancelAnimationFrame(frame);
     frame = 0;
     previous = 0;
-    const enabled = mobile.matches && !reduced.matches;
+    const enabled = mobile.matches;
     document.documentElement.classList.toggle('mobile-photo-motion', enabled);
     if (enabled && !document.hidden) frame = requestAnimationFrame(tick);
     if (!enabled) photos.forEach(photo => photo.style.removeProperty('transform'));
