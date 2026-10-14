@@ -7,3 +7,36 @@ document.querySelectorAll('[data-enquire]').forEach(b=>b.addEventListener('click
 const date=document.getElementById('date');const today=new Date();date.min=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');document.getElementById('enquiry-form').addEventListener('submit',e=>{e.preventDefault();let message='Hello Goodsam Medical Centre, I would like to enquire about '+select.value+'.';if(date.value){const [y,m,d]=date.value.split('-');message+=' My preferred visit date is '+d+'/'+m+'/'+y+'.'}message+=' Please let me know consultation availability. Thank you.';window.open('https://wa.me/917373731757?text='+encodeURIComponent(message),'_blank','noopener,noreferrer')});document.getElementById('year').textContent=String(today.getFullYear());
 
 if('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('motion-enabled');const revealObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');revealObserver.unobserve(entry.target)}})},{threshold:0.12});document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el))}
+
+// Animate mobile photo transforms directly for browsers that suppress CSS playback.
+(() => {
+  const mobile = window.matchMedia('(max-width: 720px)');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const photos = [...document.querySelectorAll('.hospital-hero .hero-picture img, .hospital-about-photo .about-hospital')];
+  let frame = 0, elapsed = 0, previous = 0;
+  function tick(now) {
+    const delta = previous ? Math.min(now - previous, 100) : 0;
+    previous = now;
+    elapsed += delta;
+    const zoom = (1 - Math.cos(elapsed * Math.PI * 2 / 16000)) / 2;
+    photos.forEach((photo, index) => {
+      photo.style.transform = 'translateZ(0) scale(' + (1 + zoom * (index === 0 ? 0.18 : 0.14)).toFixed(5) + ')';
+    });
+    frame = requestAnimationFrame(tick);
+  }
+  function sync() {
+    cancelAnimationFrame(frame);
+    frame = 0;
+    previous = 0;
+    const enabled = mobile.matches && !reduced.matches;
+    document.documentElement.classList.toggle('mobile-photo-motion', enabled);
+    if (enabled && !document.hidden) frame = requestAnimationFrame(tick);
+    if (!enabled) photos.forEach(photo => photo.style.removeProperty('transform'));
+  }
+  [mobile, reduced].forEach(query => {
+    if (query.addEventListener) query.addEventListener('change', sync);
+    else query.addListener(sync);
+  });
+  document.addEventListener('visibilitychange', sync);
+  sync();
+})();
