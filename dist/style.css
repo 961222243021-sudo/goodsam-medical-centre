@@ -44,3 +44,6 @@ header .menu{border-radius:12px;background:#f7f9fd;display:grid;place-items:cent
 .mobile-contact .mobile-action-icon{width:24px;height:24px;display:grid;place-items:center}.mobile-contact .action-icon{width:24px;height:24px}
 body{padding-bottom:calc(115px + env(safe-area-inset-bottom,0px))}
 }
+
+/* Floating contact actions removed */
+@media(max-width:720px){body{padding-bottom:0}.mobile-contact{display:none}}
