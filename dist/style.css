@@ -47,3 +47,13 @@ body{padding-bottom:calc(115px + env(safe-area-inset-bottom,0px))}
 
 /* Floating contact actions removed */
 @media(max-width:720px){body{padding-bottom:0}.mobile-contact{display:none}}
+
+/* Mobile photo compositing and visible zoom */
+@media(max-width:720px){
+.hospital-hero .hero-picture{z-index:0;overflow:hidden}.hospital-hero:after{z-index:1;pointer-events:none}.hospital-hero .hero-copy{position:relative;z-index:2}
+.hospital-hero .hero-picture img{filter:brightness(.98);animation:hospital-zoom-phone 8s ease-in-out infinite alternate;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform-origin:56% 45%}
+.hospital-about-photo .about-hospital{z-index:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}.hospital-about-photo:after{z-index:1;pointer-events:none}.hospital-about-photo>div,.hospital-about-photo>.eyebrow{z-index:2}
+.mobile-photo-motion .hospital-hero .hero-picture img,.mobile-photo-motion .hospital-about-photo .about-hospital{animation:none}
+@keyframes hospital-zoom-phone{from{transform:translateZ(0) scale(1)}to{transform:translateZ(0) scale(1.18)}}
+}
+@media(prefers-reduced-motion:reduce){.hospital-hero .hero-picture img,.hospital-about-photo .about-hospital{animation:none;transform:none}}
